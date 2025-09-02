@@ -20,6 +20,7 @@ import DeviceRiskChecker from './pages/DeviceRiskChecker';
 import RiskAssessmentResult from './pages/RiskAssessmentResult';
 import ManufacturerDashboard from './pages/ManufacturerDashboard';
 import SuperAdminDashboard from './pages/SuperAdminDashboard';
+import SuperAdminLogin from './pages/SuperAdminLogin';
 
 // Unauthorized page component
 const Unauthorized = () => (
@@ -63,6 +64,7 @@ function App() {
               <Route path="/" element={<Landing />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/super-admin-login" element={<SuperAdminLogin />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
 
               {/* Hospital/Medical routes */}
