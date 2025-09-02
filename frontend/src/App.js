@@ -19,6 +19,7 @@ import MedicalDashboard from './pages/MedicalDashboard';
 import DeviceRiskChecker from './pages/DeviceRiskChecker';
 import RiskAssessmentResult from './pages/RiskAssessmentResult';
 import ManufacturerDashboard from './pages/ManufacturerDashboard';
+import SuperAdminDashboard from './pages/SuperAdminDashboard';
 
 // Unauthorized page component
 const Unauthorized = () => (
@@ -96,6 +97,16 @@ function App() {
                 element={
                   <ProtectedRoute requiredRole="manufacturer">
                     <ManufacturerDashboard />
+                  </ProtectedRoute>
+                } 
+              />
+
+              {/* Super Admin routes */}
+              <Route 
+                path="/super-admin-dashboard" 
+                element={
+                  <ProtectedRoute requiredRole="superadmin">
+                    <SuperAdminDashboard />
                   </ProtectedRoute>
                 } 
               />

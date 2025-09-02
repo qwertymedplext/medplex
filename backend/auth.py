@@ -35,7 +35,7 @@ def init_super_admin():
             "email": "admin@hospital-device-risk.com",
             "hashed_password": hashed_password,
             "is_active": True,
-            "role": "super_admin",
+            "role": "superadmin",
             "created_at": datetime.now().isoformat()
         })
         print("Super admin user created")
@@ -196,7 +196,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 
 def get_super_admin_user(current_user: UserDB = Depends(get_current_user)):
     """Dependency to ensure user is a super admin"""
-    if current_user.role != "super_admin":
+    if current_user.role != "superadmin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Only super admins can access this endpoint"

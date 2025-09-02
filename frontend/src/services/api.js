@@ -2,7 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 // Create axios instance
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:12000/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -56,13 +56,31 @@ export const authAPI = {
   registerHospital: (data) => api.post('/register', data),
   
   // Hospital user login
-  loginHospital: (data) => api.post('/login', data),
+  loginHospital: (data) => {
+    const formData = new FormData();
+    formData.append('username', data.email);
+    formData.append('password', data.password);
+    return api.post('/login', formData, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+  },
   
   // Manufacturer registration
   registerManufacturer: (data) => api.post('/register/manufacturer', data),
   
   // Manufacturer login
-  loginManufacturer: (data) => api.post('/login/manufacturer', data),
+  loginManufacturer: (data) => {
+    const formData = new FormData();
+    formData.append('username', data.email);
+    formData.append('password', data.password);
+    return api.post('/login/manufacturer', formData, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+  },
 };
 
 // Risk assessment API calls
@@ -71,10 +89,10 @@ export const riskAPI = {
   checkRisk: (data) => api.post('/risk/check', data),
   
   // Report device failure
-  reportFailure: (data) => api.post('/risk/report_failure', data),
+  reportFailure: (data) => api.post('/report_failure', data),
   
   // Submit feedback
-  submitFeedback: (data) => api.post('/risk/continuous_learning', data),
+  submitFeedback: (data) => api.post('/continuous_learning', data),
 };
 
 // Device API calls

@@ -14,7 +14,16 @@ const Login = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const from = location.state?.from?.pathname || (userType === 'hospital' ? '/medical-dashboard' : '/manufacturer-dashboard');
+  const getDefaultRedirect = (role) => {
+    switch (role) {
+      case 'superadmin':
+        return '/super-admin-dashboard';
+      case 'manufacturer':
+        return '/manufacturer-dashboard';
+      default:
+        return '/medical-dashboard';
+    }
+  };
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -26,9 +35,17 @@ const Login = () => {
         response = await authAPI.loginManufacturer(data);
       }
 
-      const { token, user } = response.data.data;
-      login(user, token);
-      navigate(from, { replace: true });
+      const { access_token } = response.data;
+      // Create user object from token payload
+      const tokenPayload = JSON.parse(atob(access_token.split('.')[1]));
+      const user = {
+        email: tokenPayload.sub,
+        role: tokenPayload.role
+      };
+      login(user, access_token);
+      
+      const redirectPath = location.state?.from?.pathname || getDefaultRedirect(user.role);
+      navigate(redirectPath, { replace: true });
     } catch (error) {
       const message = error.response?.data?.message || 'Login failed';
       toast.error(message);
@@ -155,7 +172,7 @@ const Login = () => {
             <div className="mt-2 text-xs text-gray-500 space-y-1">
               <p><strong>Hospital:</strong> alice@cityhospital.com / password123</p>
               <p><strong>Manufacturer:</strong> contact@meditech.com / manufacturer123</p>
-              <p><strong>Super Admin:</strong> admin@medrisk.com / admin123</p>
+              <p><strong>Super Admin:</strong> admin@hospital-device-risk.com / admin123</p>
             </div>
           </div>
         </form>

@@ -1,6 +1,7 @@
 import uuid
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import joblib
 import pandas as pd
@@ -18,7 +19,17 @@ from mongo_utils import get_all_failure_reports, get_failure_reports_by_manufact
 from sqlalchemy.orm import Session
 from bson import ObjectId
 from mongo_utils import get_all_failure_reports, get_failure_reports_by_manufacturer, get_failure_reports_collection, store_device_risk_data, query_similar_devices, get_all_devices, store_failure_report, update_device_risk_data, get_device_with_feedback, get_devices_by_username, get_dashboard_stats, manufacturers_collection, users_collection, devices_collection
+
 app = FastAPI(title="Hospital Device Risk API", version="2.0")
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, replace with specific origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Add the missing Pydantic models
 class UserCreate(BaseModel):

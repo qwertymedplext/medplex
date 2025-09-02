@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const Header = () => {
-  const { user, logout, isHospital, isManufacturer } = useAuth();
+  const { user, logout, isHospital, isManufacturer, isSuperAdmin } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -57,6 +57,15 @@ const Header = () => {
               to="/manufacturer-dashboard"
             >
               Manufacturer Dashboard
+            </Link>
+          )}
+
+          {isSuperAdmin() && (
+            <Link 
+              className="text-sm text-gray-700 hover:text-brand-blue transition-colors" 
+              to="/super-admin-dashboard"
+            >
+              Super Admin Dashboard
             </Link>
           )}
 
